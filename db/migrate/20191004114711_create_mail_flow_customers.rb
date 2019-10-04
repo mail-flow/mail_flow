@@ -10,7 +10,7 @@ class CreateMailFlowCustomers < ActiveRecord::Migration[6.0]
       t.string :address
       t.string :zip
       t.string :city
-      t.jsonb :customer_fields
+      t.jsonb :customer_fields, default: {}
       t.float :latitude
       t.float :longitude
 
