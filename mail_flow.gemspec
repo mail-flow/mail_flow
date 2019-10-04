@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.version     = MailFlow::VERSION
   spec.authors     = ["Andreas Eriksson"]
   spec.email       = ["andreas@codered.se"]
-  spec.homepage    = "TODO"
-  spec.summary     = "TODO: Summary of MailFlow."
-  spec.description = "TODO: Description of MailFlow."
+  spec.homepage    = "https://github.com/mail-flow/mail_flow"
+  spec.summary     = "Summary of MailFlow."
+  spec.description = "Description of MailFlow."
   spec.license     = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

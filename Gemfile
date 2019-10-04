@@ -13,3 +13,13 @@ gemspec
 
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
+
+group :development, :test do
+  gem 'faker'
+  gem 'pry-rails'
+  gem 'rspec-rails'
+end
+
+group :test do
+  gem 'factory_bot_rails'
+end
