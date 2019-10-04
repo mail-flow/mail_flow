@@ -8,6 +8,7 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 require 'factory_bot_rails'
+require_relative 'support/shared/field_name_validator'
 
 FactoryBot.definition_file_paths << File.join(File.dirname(__FILE__), 'factories')
 FactoryBot.find_definitions
