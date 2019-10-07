@@ -3,6 +3,19 @@ require 'rails_helper'
 module MailFlow
   RSpec.describe Customer, type: :model do
 
+    describe 'valid_attributes' do
+      it 'without customer_fields it returns the default attributes' do
+        expect(described_class.valid_attributes).to match_array(%w(original_id email name first_name
+                                                                family_name phone_number address zip city
+                                                                latitude longitude))
+      end
+
+      it 'also adds a custom attribute' do
+        create(:mail_flow_customer_field, name: 'instagram')
+        expect(described_class.valid_attributes).to include('instagram')
+      end
+    end
+
     describe '#email' do
       it 'requires a email' do
         expect(build(:mail_flow_customer, email: nil)).not_to be_valid

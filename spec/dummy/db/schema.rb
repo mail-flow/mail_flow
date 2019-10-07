@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_04_125854) do
+ActiveRecord::Schema.define(version: 2019_10_05_070358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,4 +45,32 @@ ActiveRecord::Schema.define(version: 2019_10_04_125854) do
     t.index ["phone_number"], name: "index_mail_flow_customers_on_phone_number"
   end
 
+  create_table "mail_flow_segmentation", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "mail_flow_segmentation_conditions", force: :cascade do |t|
+    t.bigint "mail_flow_segmentation_group_id", null: false
+    t.string "customer_attribute"
+    t.string "kind", null: false
+    t.string "rule", null: false
+    t.string "value", null: false
+    t.string "second_value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["mail_flow_segmentation_group_id"], name: "index_mail_flow_segmentation_conditions_segmentation_group_id"
+  end
+
+  create_table "mail_flow_segmentation_groups", force: :cascade do |t|
+    t.bigint "mail_flow_segmentation_id", null: false
+    t.string "kind", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["mail_flow_segmentation_id"], name: "index_mail_flow_segmentation_groups_mail_flow_segmentation_id"
+  end
+
+  add_foreign_key "mail_flow_segmentation_conditions", "mail_flow_segmentation_groups"
+  add_foreign_key "mail_flow_segmentation_groups", "mail_flow_segmentation"
 end
