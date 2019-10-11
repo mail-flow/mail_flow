@@ -34,5 +34,57 @@ module MailFlow
         }.to change(MailFlow::SegmentationCondition, :count).from(1).to(0)
       end
     end
+
+    describe '#customer_ids' do
+      let!(:john) { create :mail_flow_customer, name: 'john' }
+      let!(:jane) { create :mail_flow_customer, name: 'jane' }
+      let!(:xavier) { create :mail_flow_customer, name: 'xavier' }
+
+      let(:name_starts_with_j) do
+        build(:mail_flow_segmentation_condition, kind: 'STRING', rule: 'STARTS_WITH', customer_attribute: 'name', value: 'j')
+      end
+
+      let(:name_starts_with_ja) do
+        build(:mail_flow_segmentation_condition, kind: 'STRING', rule: 'STARTS_WITH', customer_attribute: 'name', value: 'ja')
+      end
+
+      let(:name_starts_with_x) do
+        build(:mail_flow_segmentation_condition, kind: 'STRING', rule: 'STARTS_WITH', customer_attribute: 'name', value: 'x')
+      end
+
+      context 'all of the conditions' do
+        let(:segmentation_group) { create(:mail_flow_segmentation_group, kind: 'AND') }
+
+        it 'finds only jane with two conditions' do
+          segmentation_group.segmentation_conditions << name_starts_with_j
+          segmentation_group.segmentation_conditions << name_starts_with_ja
+          expect(segmentation_group.customer_ids).to contain_exactly(jane.id)
+        end
+
+        it 'finds no one with all conditions' do
+          segmentation_group.segmentation_conditions << name_starts_with_j
+          segmentation_group.segmentation_conditions << name_starts_with_ja
+          segmentation_group.segmentation_conditions << name_starts_with_x
+          expect(segmentation_group.customer_ids).to eq([])
+        end
+      end
+
+      context 'any of the conditions' do
+        let(:segmentation_group) { create(:mail_flow_segmentation_group, kind: 'OR') }
+
+        it 'finds john and jane with two conditions' do
+          segmentation_group.segmentation_conditions << name_starts_with_j
+          segmentation_group.segmentation_conditions << name_starts_with_ja
+          expect(segmentation_group.customer_ids).to contain_exactly(john.id, jane.id)
+        end
+
+        it 'finds all with all conditions' do
+          segmentation_group.segmentation_conditions << name_starts_with_j
+          segmentation_group.segmentation_conditions << name_starts_with_ja
+          segmentation_group.segmentation_conditions << name_starts_with_x
+          expect(segmentation_group.customer_ids).to contain_exactly(john.id, jane.id, xavier.id)
+        end
+      end
+    end
   end
 end

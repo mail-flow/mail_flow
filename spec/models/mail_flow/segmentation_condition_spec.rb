@@ -62,5 +62,53 @@ module MailFlow
         expect(condition.to_query).to eq(["customer_fields ->> 'total_purchase' > :value_0", {second_value_0: "", value_0: "500"}])
       end
     end
+
+    describe '#query' do
+      let!(:john) { create :mail_flow_customer, name: 'john' }
+      let!(:jane) { create :mail_flow_customer, name: 'jane' }
+      let!(:xavier) { create :mail_flow_customer, name: 'xavier' }
+
+      let(:name_starts_with_j) do
+        build(:mail_flow_segmentation_condition, kind: 'STRING', rule: 'STARTS_WITH', customer_attribute: 'name', value: 'j')
+      end
+
+      let(:name_starts_with_ja) do
+        build(:mail_flow_segmentation_condition, kind: 'STRING', rule: 'STARTS_WITH', customer_attribute: 'name', value: 'ja')
+      end
+
+      it 'finds both john and jane when searching for name starting with j' do
+        expect(name_starts_with_j.query).to contain_exactly(john, jane)
+      end
+
+      it 'finds only jane when searching for name starting with ja' do
+        expect(name_starts_with_ja.query).to contain_exactly(jane)
+      end
+    end
+
+    describe '#customer_ids' do
+      let!(:john) { create :mail_flow_customer, name: 'john' }
+      let!(:jane) { create :mail_flow_customer, name: 'jane' }
+      let!(:xavier) { create :mail_flow_customer, name: 'xavier' }
+
+      let(:name_starts_with_j) do
+        build(:mail_flow_segmentation_condition, kind: 'STRING', rule: 'STARTS_WITH', customer_attribute: 'name', value: 'j')
+      end
+
+      let(:name_starts_with_ja) do
+        build(:mail_flow_segmentation_condition, kind: 'STRING', rule: 'STARTS_WITH', customer_attribute: 'name', value: 'ja')
+      end
+
+      it 'finds both johns id and janes id when searching for name starting with j' do
+        expect(name_starts_with_j.customer_ids).to contain_exactly(john.id, jane.id)
+      end
+
+      it 'finds only janes id when searching for name starting with ja' do
+        expect(name_starts_with_ja.customer_ids).to contain_exactly(jane.id)
+      end
+
+      it 'finds only janes id when searching for name starting with j and passing in her id' do
+        expect(name_starts_with_j.customer_ids(with_customer_ids: [jane.id])).to contain_exactly(jane.id)
+      end
+    end
   end
 end

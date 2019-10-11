@@ -76,6 +76,22 @@ module MailFlow
       }
     }.freeze
 
+    def customer_ids(with_customer_ids: [])
+      if with_customer_ids.empty?
+        query.pluck(:id)
+      else
+        query.where(id: with_customer_ids.to_a).pluck(:id)
+      end
+    end
+
+    def query
+      MailFlow::Customer.where(to_query)
+    end
+
+    def to_sql
+      query.to_sql
+    end
+
     def to_s
       second_value = "and #{second_value}" if second_value.present?
       "#{customer_attribute.capitalize} #{rule.downcase} #{value} #{second_value}".squish
