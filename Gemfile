@@ -14,6 +14,8 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 
+gem 'jbuilder'
+
 group :development, :test do
   gem 'faker'
   gem 'pry-rails'

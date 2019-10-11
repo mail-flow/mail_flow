@@ -79,6 +79,8 @@ GEM
       activesupport (>= 4.2.0)
     i18n (1.6.0)
       concurrent-ruby (~> 1.0)
+    jbuilder (2.9.1)
+      activesupport (>= 4.2.0)
     loofah (2.3.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -169,6 +171,7 @@ PLATFORMS
 DEPENDENCIES
   factory_bot_rails
   faker
+  jbuilder
   mail_flow!
   pg
   pry-rails

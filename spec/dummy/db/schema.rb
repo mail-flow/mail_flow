@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_05_070358) do
+ActiveRecord::Schema.define(version: 2019_10_07_155242) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(version: 2019_10_05_070358) do
     t.string "address"
     t.string "zip"
     t.string "city"
-    t.jsonb "customer_fields"
+    t.jsonb "customer_fields", default: {}
     t.float "latitude"
     t.float "longitude"
     t.datetime "created_at", precision: 6, null: false
@@ -43,6 +43,13 @@ ActiveRecord::Schema.define(version: 2019_10_05_070358) do
     t.index ["name"], name: "index_mail_flow_customers_on_name"
     t.index ["original_id"], name: "index_mail_flow_customers_on_original_id", unique: true
     t.index ["phone_number"], name: "index_mail_flow_customers_on_phone_number"
+  end
+
+  create_table "mail_flow_flows", force: :cascade do |t|
+    t.string "name", null: false
+    t.boolean "active", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "mail_flow_segmentation", force: :cascade do |t|

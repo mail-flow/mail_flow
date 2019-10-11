@@ -1,0 +1,19 @@
+<h1>Flows</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Active</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @flows.each do |flow| %>
+      <tr>
+        <td><%= flow.name %></td>
+        <td><%= flow.active %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
